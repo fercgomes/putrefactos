@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "../cpu/ports.h"
+#include <stdint.h>
 
 /* private functions */
 int get_cursor_offset();
@@ -59,7 +60,7 @@ void kprint_backspace() {
     Sets video cursor to returned offset.
 */
 int print_char(char c, int col, int row, char attr) {
-    unsigned char *vidmem = (unsigned char*) VIDEO_ADDRESS;
+    uint8_t *vidmem = (uint8_t*) VIDEO_ADDRESS;
     /* sets default color attr */
     if (!attr) attr = WHITE_ON_BLACK;  
 
@@ -122,9 +123,9 @@ int get_cursor_offset() {
 void set_cursor_offset(int offset) {
     offset /= 2;
     port_byte_out(REG_SCREEN_CONTROL, 14);
-    port_byte_out(REG_SCREEN_DATA, (unsigned char) (offset >> 8));
+    port_byte_out(REG_SCREEN_DATA, (uint8_t) (offset >> 8));
     port_byte_out(REG_SCREEN_CONTROL, 15);
-    port_byte_out(REG_SCREEN_DATA, (unsigned char) (offset & 0xff));
+    port_byte_out(REG_SCREEN_DATA, (uint8_t) (offset & 0xff));
 }
 
 void clear_screen() {
